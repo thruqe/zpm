@@ -798,7 +798,7 @@ func localTagSHA(root string, tag string) (string, error) {
 
 func parseVersionLines(out string) []version {
 	var versions []version
-	for _, line := range strings.Split(out, "\n") {
+	for line := range strings.SplitSeq(out, "\n") {
 		fields := strings.Fields(strings.TrimSpace(line))
 		if len(fields) > 0 {
 			line = fields[len(fields)-1]
@@ -1020,7 +1020,7 @@ func loadDotEnv(path string) map[string]string {
 		return map[string]string{}
 	}
 	env := map[string]string{}
-	for _, line := range strings.Split(string(data), "\n") {
+	for line := range strings.SplitSeq(string(data), "\n") {
 		line = strings.TrimSpace(line)
 		if line == "" || strings.HasPrefix(line, "#") {
 			continue

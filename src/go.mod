@@ -1,6 +1,6 @@
-module github.com/shellhaki/zpmcli
+module github.com/thruqe/zpmcli
 
-go 1.22.2
+go 1.27.2
 
 require (
 	github.com/charmbracelet/bubbletea v0.27.1

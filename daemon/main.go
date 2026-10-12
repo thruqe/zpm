@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"maps"
 	"net"
 	"os"
 	"os/exec"
@@ -97,9 +98,7 @@ func EnvList(process Process) []string {
 		envMap["BUN_ENV"] = process.EnvName
 		envMap["APP_ENV"] = process.EnvName
 	}
-	for key, value := range process.Env {
-		envMap[key] = value
-	}
+	maps.Copy(envMap, process.Env)
 	out := make([]string, 0, len(envMap))
 	for key, value := range envMap {
 		out = append(out, key+"="+value)
@@ -303,7 +302,7 @@ func StopProcess(name string) (Process, error) {
 		return p
 	})
 	stopPid(process.Pid, false)
-	for i := 0; i < 30; i++ {
+	for range 30 {
 		if !IsRunning(process.Pid) {
 			break
 		}

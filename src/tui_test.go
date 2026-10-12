@@ -69,7 +69,7 @@ func sampleTUIProcesses() []Process {
 
 func maxLineWidth(value string) int {
 	max := 0
-	for _, line := range strings.Split(value, "\n") {
+	for line := range strings.SplitSeq(value, "\n") {
 		if width := lipgloss.Width(line); width > max {
 			max = width
 		}
