@@ -5,7 +5,7 @@
 set -e
 
 VERSION="${1:-latest}"
-REPO="shellhaki/zpm"
+REPO="thruqe/zpm"
 GITHUB_RAW="https://raw.githubusercontent.com/${REPO}/main/scripts"
 
 # Color output

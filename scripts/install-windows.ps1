@@ -32,7 +32,7 @@ function Get-DownloadUrl {
         [string]$Architecture
     )
     
-    $repo = "shellhaki/zpm"
+    $repo = "thruqe/zpm"
     $github_api = "https://api.github.com/repos/$repo/releases"
     
     try {

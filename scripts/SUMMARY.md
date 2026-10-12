@@ -62,12 +62,12 @@ A comprehensive, production-ready cross-platform installation system for ZPM wit
 
 ### Linux/macOS
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash
 ```
 
 ### Windows (PowerShell as Administrator)
 ```powershell
-irm https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install-windows.ps1 | iex
+irm https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install-windows.ps1 | iex
 ```
 
 ---
@@ -205,12 +205,12 @@ No changes needed to the build process!
 ### Basic Installation
 ```bash
 # Linux/macOS
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash
 ```
 
 ### Specific Version
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash -s v1.0.0
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash -s v1.0.0
 ```
 
 ### Verify After Installation

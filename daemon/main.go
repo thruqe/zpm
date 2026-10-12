@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"encoding/json"
 	"errors"
 	"fmt"
@@ -397,26 +396,6 @@ func PurgeTargets(name string) ([]Process, error) {
 	return purged, nil
 }
 
-func ReadRSS(pid int) int64 {
-	file, err := os.Open(filepath.Join("/proc", strconv.Itoa(pid), "status"))
-	if err != nil {
-		return 0
-	}
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
-	for scanner.Scan() {
-		line := scanner.Text()
-		if strings.HasPrefix(line, "VmRSS:") {
-			fields := strings.Fields(line)
-			if len(fields) >= 2 {
-				value, _ := strconv.ParseInt(fields[1], 10, 64)
-				return value
-			}
-		}
-	}
-	return 0
-}
-
 func CheckHealth(process Process) (bool, string) {
 	if !IsRunning(process.Pid) {
 		return false, "process is not running"
@@ -445,7 +424,7 @@ func RefreshStatuses() {
 			UpdateProcess(process.Name, func(p Process) Process {
 				p.Healthy = healthy
 				p.LastError = message
-				p.MemoryRssKB = ReadRSS(p.Pid)
+				p.MemoryRssKB = readRSS(p.Pid)
 				if p.StartedAt > 0 {
 					p.UptimeSeconds = timeNow() - p.StartedAt
 				} else {

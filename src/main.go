@@ -10,6 +10,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
@@ -153,18 +154,29 @@ func FindDaemon() (string, error) {
 		return path, nil
 	}
 	cwd, _ := os.Getwd()
-	candidates := []string{
-		filepath.Join(cwd, "daemon", "zpmd"),
-		filepath.Join(cwd, "..", "daemon", "zpmd"),
-		"zpmd",
+	binNames := []string{"zpmd"}
+	if runtime.GOOS == "windows" {
+		binNames = []string{"zpmd.exe", "zpmd"}
+	}
+	var candidates []string
+	for _, name := range binNames {
+		candidates = append(candidates,
+			filepath.Join(cwd, "daemon", name),
+			filepath.Join(cwd, "..", "daemon", name),
+			name,
+		)
 	}
 	exe, err := os.Executable()
 	if err == nil {
 		dir := filepath.Dir(exe)
-		candidates = append([]string{
-			filepath.Join(dir, "zpmd"),
-			filepath.Join(dir, "..", "daemon", "zpmd"),
-		}, candidates...)
+		var extra []string
+		for _, name := range binNames {
+			extra = append(extra,
+				filepath.Join(dir, name),
+				filepath.Join(dir, "..", "daemon", name),
+			)
+		}
+		candidates = append(extra, candidates...)
 	}
 	for _, candidate := range candidates {
 		path, err := exec.LookPath(candidate)

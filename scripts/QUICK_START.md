@@ -4,12 +4,12 @@
 
 ### Linux/macOS (Bash)
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash
 ```
 
 ### Windows (PowerShell as Administrator)
 ```powershell
-irm https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install-windows.ps1 | iex
+irm https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install-windows.ps1 | iex
 ```
 
 ---
@@ -54,7 +54,7 @@ zpm start script.js     # Start managing a process
 
 ```bash
 # Linux/macOS with specific version
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash -s v1.0.0
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash -s v1.0.0
 
 # Windows with specific version (PowerShell)
 # Edit the script or download manually from GitHub Releases

@@ -19,7 +19,7 @@ Created a comprehensive, cross-platform installation system for ZPM (Zen Process
 
 **Usage:**
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash
 ```
 
 ### 2. **install-linux.sh** - Linux Installer
@@ -105,9 +105,9 @@ Platforms use native service management:
 ### GitHub Release Download
 All scripts use GitHub API to fetch the latest (or specific) release:
 ```
-https://api.github.com/repos/shellhaki/zpm/releases/latest
+https://api.github.com/repos/thruqe/zpm/releases/latest
 or
-https://api.github.com/repos/shellhaki/zpm/releases/tags/{version}
+https://api.github.com/repos/thruqe/zpm/releases/tags/{version}
 ```
 
 Assets are matched by filename pattern:
@@ -155,26 +155,26 @@ launchctl load ~/Library/LaunchAgents/com.zpm.daemon.plist
 
 **Linux/macOS:**
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash
 ```
 
 **Windows (PowerShell as Administrator):**
 ```powershell
-irm https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install-windows.ps1 | iex
+irm https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install-windows.ps1 | iex
 ```
 
 ### With Specific Version
 
 **Linux/macOS:**
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash -s v1.0.0
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash -s v1.0.0
 ```
 
 ### With Custom Install Directory
 
 **Linux/macOS:**
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash -s latest /usr/local/bin
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash -s latest /usr/local/bin
 ```
 
 ## Security Considerations

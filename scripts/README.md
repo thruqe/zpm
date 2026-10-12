@@ -6,23 +6,23 @@ One-line installers for ZPM (Zen Process Manager) across Linux, macOS, and Windo
 
 ### Linux & macOS
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash
 ```
 
 Or with a specific version:
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash -s v1.0.0
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash -s v1.0.0
 ```
 
 ### Windows (PowerShell)
 Run **PowerShell as Administrator**, then:
 ```powershell
-irm https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install-windows.ps1 | iex
+irm https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install-windows.ps1 | iex
 ```
 
 Or with a specific version:
 ```powershell
-$script = irm https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install-windows.ps1
+$script = irm https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install-windows.ps1
 $block = [scriptblock]::Create($script)
 & $block -Version "v1.0.0"
 ```
@@ -81,12 +81,12 @@ $block = [scriptblock]::Create($script)
 
 ### Linux & macOS
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash -s latest /usr/local/bin
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash -s latest /usr/local/bin
 ```
 
 ### Windows
 ```powershell
-$script = irm https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install-windows.ps1
+$script = irm https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install-windows.ps1
 $block = [scriptblock]::Create($script)
 & $block -Version "latest" -InstallDir "C:\Program Files\zpm"
 ```
@@ -95,7 +95,7 @@ $block = [scriptblock]::Create($script)
 
 ```bash
 # Clone repository
-git clone https://github.com/shellhaki/zpm
+git clone https://github.com/thruqe/zpm
 cd zpm
 
 # Build daemon

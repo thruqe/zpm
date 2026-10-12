@@ -159,7 +159,7 @@ func PrintUsage(out io.Writer) {
 
   %sEnvironment:%s
     GITHUB_TOKEN or GH_TOKEN        Token with contents:write for publishing
-    GITHUB_REPOSITORY               Repository slug, for example shellhaki/zpm
+    GITHUB_REPOSITORY               Repository slug, for example thruqe/zpm
 
   %s.env is loaded from the repository root when present.%s
 `, colorBold, colorReset, colorYellow, colorReset, colorCyan, colorReset, colorDim, colorReset)
@@ -269,7 +269,7 @@ func loadConfig(root string, cmd command, out io.Writer, errOut io.Writer) (conf
 		errOut:     errOut,
 	}
 	if cfg.repo == "" {
-		return cfg, errors.New("github repo not found; set GITHUB_REPOSITORY=shellhaki/zpm in .env")
+		return cfg, errors.New("github repo not found; set GITHUB_REPOSITORY=thruqe/zpm in .env")
 	}
 	return cfg, nil
 }

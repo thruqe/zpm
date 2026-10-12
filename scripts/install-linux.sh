@@ -6,7 +6,7 @@ set -e
 
 VERSION="${1:-latest}"
 INSTALL_DIR="${2:-.local/bin}"
-REPO="shellhaki/zpm"
+REPO="thruqe/zpm"
 GITHUB_API="https://api.github.com/repos/${REPO}/releases"
 
 # Color output

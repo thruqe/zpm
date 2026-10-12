@@ -20,11 +20,19 @@ func stopPid(pid int, force bool) {
 	if pid <= 0 {
 		return
 	}
-	exec.Command("taskkill", "/PID", strconv.Itoa(pid), "/T", "/F").Run()
+	args := []string{"/PID", strconv.Itoa(pid), "/T"}
+	if force {
+		args = append(args, "/F")
+	}
+	exec.Command("taskkill", args...).Run()
 }
 
 func stopDaemonByName(force bool) {
-	exec.Command("taskkill", "/IM", "zpmd.exe", "/T", "/F").Run()
+	args := []string{"/IM", "zpmd.exe", "/T"}
+	if force {
+		args = append(args, "/F")
+	}
+	exec.Command("taskkill", args...).Run()
 }
 
 func installStartup() error {
@@ -33,7 +41,7 @@ func installStartup() error {
 		return err
 	}
 	exec.Command("schtasks", "/Delete", "/TN", "zpm", "/F").Run()
-	return exec.Command("schtasks", "/Create", "/TN", "ZPM Daemon", "/TR", daemon, "/SC", "ONLOGON", "/F").Run()
+	return exec.Command("schtasks", "/Create", "/TN", "ZPM Daemon", "/TR", cmdQuote(daemon), "/SC", "ONLOGON", "/F").Run()
 }
 
 func uninstallStartup() error {

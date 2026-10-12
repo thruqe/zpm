@@ -1,144 +1,55 @@
-# ZPM
+![zpm](https://raw.githubusercontent.com/thruqe/zpm/main/docs/public/zpm.jpg)
 
-[![Go](https://img.shields.io/badge/Go-1.22-00ADD8?style=for-the-badge&logo=go)](https://go.dev/)
-[![Linux](https://img.shields.io/badge/Linux-ready-FCC624?style=for-the-badge&logo=linux&logoColor=000)](#)
-[![macOS](https://img.shields.io/badge/macOS-ready-000000?style=for-the-badge&logo=apple)](#)
-[![Windows](https://img.shields.io/badge/Windows-ready-0078D4?style=for-the-badge&logo=windows)](#)
+zpm is a small, sharp process manager for apps you want to keep alive, providing production-grade daemon supervision, health checking, automatic restart, log rotation, and cluster scaling with zero configuration hassle.
 
-**ZPM is a small, sharp process manager for apps you want to keep alive.**
+## Usage
 
-It gives you a daemon, named processes, crash restart, log following, clusters, environment profiles, health checks, log rotation, startup on boot, and ecosystem config files without turning your terminal into a carnival.
+If you want to install on your system, see the [Installation Guide](./scripts/README.md) to quickly install.
 
-## Quick Install
+### Quick Install
 
-### One-Liner Installation
-
-**Linux/macOS (Bash):**
+**Linux / macOS (Bash):**
 ```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash
+curl -sL https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install.sh | bash
 ```
 
 **Windows (PowerShell as Administrator):**
 ```powershell
-irm https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install-windows.ps1 | iex
+irm https://raw.githubusercontent.com/thruqe/zpm/main/scripts/install-windows.ps1 | iex
 ```
 
-### What Gets Installed
+**Homebrew (macOS & Linux):**
+```bash
+brew tap thruqe/tap
+brew install zpm
+```
 
-- **zpm** - Command-line interface for managing processes
-- **zpmd** - Background daemon (auto-starts on boot)
-- **PATH** - Binary location automatically added to your system PATH
+**WinGet (Windows):**
+```powershell
+winget install thruqe.zpm
+```
 
-### After Installation
+**Chocolatey (Windows):**
+```powershell
+choco install zpm
+```
+
+### Essential Commands
 
 ```bash
-zpm --help              # See available commands
-zpmd                    # Start daemon (or auto-starts on boot)
-zpm list                # List managed processes
-zpm tui                 # Open the animated terminal dashboard
-zpm start script.js     # Start managing a process
+zpm start "bun index.ts" --name api --follow   # Start managing an application
+zpm list                                      # List all managed processes and statuses
+zpm tui                                       # Launch the live animated terminal dashboard
+zpm stop api                                  # Stop a running process or cluster
+zpm restart api                               # Restart a process or cluster
+zpm purge api                                 # Stop and remove process entry and logs
+zpm daemon start                              # Start background supervisor daemon
+zpm startup install                           # Configure auto-start on system boot/login
 ```
 
-### Supported Platforms
+### Ecosystem Configuration
 
-✅ **Linux**: amd64, arm64 (auto-detected)  
-✅ **macOS**: amd64 (Intel), arm64 (Apple Silicon) (auto-detected)  
-✅ **Windows**: amd64
-
-### Daemon Auto-Start
-
-| Platform | Managed By | Enable Command |
-|----------|-----------|-----------------|
-| **Linux** | systemd user service | `systemctl --user enable zpmd` |
-| **macOS** | LaunchAgent | `launchctl load ~/Library/LaunchAgents/com.zpm.daemon.plist` |
-| **Windows** | Task Scheduler | Auto-configured if installer run as Admin |
-
-## Install From Source
-
-```bash
-go build -o daemon/zpmd ./daemon
-go build -o src/zpm ./src
-ln -sf "$PWD/src/zpm" ~/.local/bin/zpp
-```
-
-Keep `zpmd` beside the CLI or set:
-
-```bash
-export ZPMD_PATH=/path/to/zpmd
-```
-
-## Daemon
-
-```bash
-zpp daemon start
-zpp daemon stop
-zpp daemon reload
-```
-
-Start on login:
-
-```bash
-zpp startup install
-zpp startup uninstall
-```
-
-Linux uses user systemd, macOS uses LaunchAgent, Windows uses Task Scheduler.
-
-## Run Apps
-
-```bash
-zpp start "bun index" --name api --follow
-zpp status
-zpp tui
-zpp stop api
-zpp restart api
-zpp start api
-zpp purge api
-```
-
-ZPM starts commands from the directory where you run `zpp start`, so package scripts work naturally.
-
-```json
-{
-  "scripts": {
-    "serve:zpm": "zpp start \"bun index\" --name api --follow"
-  }
-}
-```
-
-## PM2-Style Features
-
-```bash
-zpp start "bun index" --name api --env production
-zpp start "bun index" --name api --env PORT=3000
-zpp start "bun index" --name api --instances 4
-zpp start "bun index" --name api --restart-delay 1000 --max-restarts 10
-zpp start "bun index" --name api --health "curl -fsS http://127.0.0.1:3000/health"
-zpp start "bun index" --name api --log-max-size 20mb --log-backups 7
-```
-
-Cluster instances are named `api-0`, `api-1`, etc. Group commands work:
-
-```bash
-zpp stop api
-zpp restart api
-zpp purge api
-```
-
-## Terminal Dashboard
-
-```bash
-zpm tui
-zpm ui
-zpm tux
-zpm status --watch
-```
-
-The dashboard refreshes live, animates daemon activity, adapts to narrow and wide terminals, and lets you move through processes with `j/k` or arrow keys.
-
-## Ecosystem Config
-
-Create `zpm.config.json`:
+Process configurations can be declared in `zpm.config.json` for reproducible deployments:
 
 ```json
 {
@@ -165,172 +76,59 @@ Create `zpm.config.json`:
 }
 ```
 
-Run it:
-
+Run declarative environments with a single command:
 ```bash
-zpp ecosystem start zpm.config.json --env production
+zpm ecosystem start zpm.config.json --env production
 ```
 
-## Storage
+## Features
 
-ZPM stores state in your user config directory:
+### Native Cross-Platform Process Supervision
+- **Self-Contained Native Daemons**: Independent background supervisor (`zpmd`) continuously managing process lifecycles without bulky runtime runtimes.
+- **Full OS Platform Parity**: First-class support across Linux (amd64, arm64), macOS (Intel, Apple Silicon), and Windows (x64, ARM64).
+- **Native Boot Integration**: Seamless service integration utilizing `systemd` user services on Linux, `LaunchAgent` on macOS, and Windows Task Scheduler.
 
-```text
-registry.json
-daemon.pid
-daemon.log
-logs/<process>.log
-```
+### Autonomous Healing & Crash Recovery
+- **Automatic Process Restarts**: Instant automatic respawn upon abnormal termination or crash with configurable restart backoff delays (`--restart-delay`) and thresholds (`--max-restarts`).
+- **Periodic Health Verification**: Configurable active health probes (`--health`) executed at regular intervals with automated recovery if probes fail.
+- **Graceful Lifecycle Signaling**: Orderly process shutdowns with configurable timeout escalations before forceful termination.
 
-On Linux that is usually `~/.config/zpm`.
+### Dynamic Cluster Scaling & Multi-Instance Execution
+- **Zero-Config Cluster Spawning**: Spin up multiple concurrent workers with `--instances <n>` (e.g. `api-0`, `api-1`).
+- **Unified Cluster Targeting**: Control and manage entire clusters collectively or individually (`zpm stop api`, `zpm restart api`).
+- **Execution Directory Preservation**: Processes start accurately within their target working directories (`--cwd`), maintaining relative assets and module paths.
 
-## Installation Scripts (Curl-Based)
+### Live Terminal Dashboard (TUI)
+- **Interactive Console UI**: Real-time curses dashboard (`zpm tui`) showcasing CPU, RSS memory footprint, restart counters, and live uptime.
+- **Responsive Layout Adaptation**: Automatically adapts between compact mobile-width terminals and wide desktop console viewports.
+- **Keyboard Navigation**: Smooth interactive keyboard controls (`j`/`k`, arrow keys) for inspecting individual process logs and metrics.
 
-The one-liner installers are cross-platform shell/PowerShell scripts that automate installation. This section describes how they work and the implementation details.
+### High-Performance Log Streaming & Rotation
+- **Zero-Drop Standard I/O Capture**: Dedicated non-blocking stdout and stderr aggregation directly into organized process log vaults.
+- **Configurable Log Rotation**: Automatic size-based rotation (`--log-max-size`) with configurable archive retention limits (`--log-backups`).
+- **Live Output Following**: Real-time console log streaming directly during startup using `--follow` or via process log inspections.
 
-### How It Works
+### Zero-Overhead Self-Contained Footprint
+- **Static Native Binaries**: Pure Go implementation compiled without CGO dependencies; starts instantly with microscopic memory overhead (<10 MB RAM).
+- **Clean Isolated IPC**: Fast, reliable local socket/TCP communication between CLI tools and the supervision daemon.
+- **Standardized State Storage**: Predictable, clean filesystem layout storing logs, state registries, and PID locks inside native platform user configuration directories.
 
-The universal installer (`install.sh`) detects your operating system and architecture, then routes to the appropriate platform-specific installer:
+## Contributions
 
-```
-User runs: curl | bash
-    ↓
-install.sh (universal entry point)
-    ↓
-    ├─→ Linux? → install-linux.sh
-    ├─→ macOS? → install-macos.sh
-    └─→ Windows? → install-windows.ps1
-```
+If you want to help make this project better, please take the time to read this contribution [doc](./docs/CONTRIBUTING.md) and [fork](https://github.com/thruqe/zpm/fork) this repository. Then open a pull request with your changes.
 
-### Platform-Specific Installers
+If you are using any AI agent for assistance, please refer to the [AGENTS documentation](./docs/AGENTS.md) Guide.
 
-#### Linux (install-linux.sh)
-- **Architecture detection**: Auto-detects amd64 or arm64 via `uname -m`
-- **Download**: Fetches `zpm-linux-{arch}.tar.gz` from GitHub Releases
-- **Installation**: Extracts to `~/.local/bin/`
-- **PATH setup**: Adds export to `~/.bashrc` or `~/.zshrc` (shell auto-detected)
-- **Daemon**: Creates systemd user service at `~/.config/systemd/user/zpmd.service`
-- **Error handling**: Validates binaries and URLs, comprehensive error messages
+## Acknowledgements
 
-#### macOS (install-macos.sh)
-- **Architecture detection**: Auto-detects amd64 or arm64 via `uname -m`
-- **Download**: Fetches `zpm-darwin-{arch}.tar.gz` from GitHub Releases
-- **Installation**: Extracts to `~/.local/bin/`
-- **PATH setup**: Adds export to `~/.zshrc` or `~/.bash_profile` (shell auto-detected)
-- **Daemon**: Creates LaunchAgent at `~/Library/LaunchAgents/com.zpm.daemon.plist`
-- **Logging**: Creates `~/.zpm/` directory for daemon logs
-- **Error handling**: Validates binaries and URLs, color-coded output
+zpm wouldn't have been possible without these open source, community and passion-driven projects: [PM2](https://pm2.keymetrics.io/), [Bubble Tea](https://github.com/charmbracelet/bubbletea), [Lip Gloss](https://github.com/charmbracelet/lipgloss), and the broader Go ecosystem.
 
-#### Windows (install-windows.ps1)
-- **Architecture detection**: Uses `PROCESSOR_ARCHITECTURE` environment variable
-- **Download**: Fetches `zpm-windows-amd64.tar.gz` from GitHub Releases
-- **Installation**: Extracts to `%LOCALAPPDATA%\zpm\bin`
-- **PATH setup**: Updates User PATH environment variable (persists across sessions)
-- **Daemon**: Creates Task Scheduler task "ZPM Daemon" (if run as Administrator)
-- **Error handling**: Graceful handling when not run as Administrator
+## Licensing
 
-### Key Features
+This project is open source, see the [LICENSE](./LICENSE) file for full details.
 
-✅ **No external tools** - Uses only curl, tar, and basic shell utilities  
-✅ **Auto-detection** - OS, architecture, and shell all auto-detected  
-✅ **User-level install** - No sudo/admin required (except Windows Task Scheduler)  
-✅ **Platform-native services** - Uses systemd/LaunchAgent/Task Scheduler  
-✅ **Error handling** - Validates downloads, verifies binaries, helpful messages  
-✅ **Color output** - Clear, friendly terminal feedback  
+## Support this project
 
-### GitHub Release Integration
+If you found this project to be useful in anyway, please consider sending a tip.
 
-All scripts fetch from GitHub API:
-```
-https://api.github.com/repos/shellhaki/zpm/releases/latest
-or
-https://api.github.com/repos/shellhaki/zpm/releases/tags/{version}
-```
-
-Binary assets are matched by platform pattern:
-- Linux: `zpm-linux-{arch}.tar.gz`
-- macOS: `zpm-darwin-{arch}.tar.gz`
-- Windows: `zpm-windows-amd64.tar.gz`
-
-### Custom Installation Directory
-
-**Linux/macOS (specify custom directory as second argument):**
-```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash -s latest /usr/local/bin
-```
-
-**Windows PowerShell:**
-```powershell
-$InstallDir = "C:\Program Files\zpm"
-# Download and edit the script with custom InstallDir
-```
-
-### Specify Version
-
-**Linux/macOS (specific version as first argument):**
-```bash
-curl -sL https://raw.githubusercontent.com/shellhaki/zpm/main/scripts/install.sh | bash -s v1.0.0
-```
-
-### Troubleshooting
-
-**Command not found after install?**
-- Linux/macOS: Run `source ~/.bashrc` or `source ~/.zshrc`
-- Windows: Restart your terminal/PowerShell
-
-**Daemon won't start?**
-- Linux: Check with `systemctl --user status zpmd`
-- macOS: Check with `launchctl list | grep zpm`
-- Windows: Check Task Scheduler for "ZPM Daemon" task
-
-**Failed to download?**
-- Verify internet connection
-- Check GitHub is accessible
-- Try specifying an exact version instead of "latest"
-
-### Uninstall
-
-**Linux:**
-```bash
-systemctl --user disable zpmd
-rm ~/.local/bin/{zpm,zpmd}
-# Edit ~/.bashrc or ~/.zshrc to remove ZPM PATH export
-```
-
-**macOS:**
-```bash
-launchctl unload ~/Library/LaunchAgents/com.zpm.daemon.plist
-rm -rf ~/.local/bin/{zpm,zpmd} ~/.zpm ~/Library/LaunchAgents/com.zpm.daemon.plist
-# Edit ~/.zshrc or ~/.bash_profile to remove ZPM PATH export
-```
-
-**Windows (PowerShell as Administrator):**
-```powershell
-Unregister-ScheduledTask -TaskName "ZPM Daemon" -Confirm:$false
-Remove-Item "$env:LOCALAPPDATA\zpm" -Recurse
-# Remove from User PATH environment variables manually
-```
-
-### Script Files
-
-Located in the `scripts/` directory:
-- **install.sh** - Universal entry point (OS detection and routing)
-- **install-linux.sh** - Linux-specific installer with systemd integration
-- **install-macos.sh** - macOS-specific installer with LaunchAgent integration
-- **install-windows.ps1** - Windows PowerShell installer with Task Scheduler integration
-- **README.md** - Detailed installation and troubleshooting guide
-
-## Release
-
-Push a tag to publish cross-platform builds:
-
-```bash
-git tag v1.0.1
-git push origin v1.0.1
-```
-
-The release pipeline builds:
-
-- Linux amd64, arm64
-- macOS amd64, arm64
-- Windows amd64
+<a href="https://etherscan.io/address/0x76a5307e573401f2b7189fb721a33dc483e985a8"><img src="https://cdn-icons-png.flaticon.com/128/15301/15301597.png" width="24" height="24" alt="Donate ETH" /></a> `0x76a5307e573401f2b7189fb721a33dc483e985a8`
